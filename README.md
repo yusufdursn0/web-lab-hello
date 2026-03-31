@@ -25,4 +25,4 @@ Tarayicida http :// localhost :5173 adresini ac.
 
 ## Ekran Goruntusu
 
-![alt text](image.png)
+![Proje Ekran Goruntusu](images/ekran-goruntusu.png)
