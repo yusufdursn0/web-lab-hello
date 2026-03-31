@@ -16,3 +16,13 @@ Vite + React + TypeScript kullanilarak olusturulmustur.
 ## Kurulum
 ```bash
 npm install
+
+## Calistirma
+bash
+npm run dev
+ ```
+Tarayicida http :// localhost :5173 adresini ac.
+
+## Ekran Goruntusu
+
+![alt text](image.png)
