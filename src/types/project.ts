@@ -1,24 +1,12 @@
-export type Category = "frontend" | "fullstack" | "backend";
-
-export type SortField = "year" | "title";
-export type SortOrder = "asc" | "desc";
+export type Category = "frontend" | "backend" | "fullstack";
 
 export interface Project {
-  readonly id: number;
+  id: number;
   title: string;
   description: string;
   tech: string[];
   year: number;
   category: Category;
-  featured: boolean;
-  image: string;
-  demoUrl?: string;
-  sourceUrl?: string;
-}
-
-export interface FilterState {
-  search: string;
-  category: Category | "all";
-  sortField: SortField;
-  sortOrder: SortOrder;
+  github?: string;
+  demo?: string;
 }
