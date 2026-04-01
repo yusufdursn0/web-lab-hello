@@ -1,213 +1,194 @@
-import "./App.css";
+import UIKit from "./pages/UIKit";
+import Button from "./components/Button";
 
-function App() {
+export default function App() {
+  const toggleDarkMode = () => {
+    document.documentElement.classList.toggle("dark");
+  };
+
   return (
-    <>
-      <a href="#main-content" className="skip-link">
+    <div className="min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+      <a
+        href="#main-content"
+        className="sr-only bg-blue-800 p-2 text-white focus:not-sr-only focus:absolute focus:left-0 focus:top-0 z-50"
+      >
         Ana içeriğe atla
       </a>
 
-      <header className="site-header">
-        <div className="container header-inner">
-          <div className="site-title">Yusuf Dursun</div>
+      <button
+        onClick={toggleDarkMode}
+        className="fixed right-4 top-4 z-50 rounded-full bg-gray-200 p-2 text-gray-800 shadow-lg transition-transform hover:scale-110 dark:bg-gray-700 dark:text-gray-200"
+        aria-label="Tema değiştir"
+      >
+        <span className="dark:hidden">☾</span>
+        <span className="hidden dark:inline">☀</span>
+      </button>
+
+      <header className="sticky top-0 z-40 border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 py-3 sm:flex-row">
+          <h1 className="text-xl font-bold text-blue-800 dark:text-blue-300">
+            Yusuf - Tailwind Portföy
+          </h1>
 
           <nav aria-label="Ana navigasyon">
-            <ul className="nav-list">
+            <ul className="flex flex-wrap gap-2">
               <li>
-                <a href="#hakkimda">Hakkımda</a>
+                <a
+                  href="#hakkimda"
+                  className="rounded-md px-3 py-1 text-gray-700 transition-colors hover:bg-blue-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                >
+                  Hakkımda
+                </a>
               </li>
               <li>
-                <a href="#projeler">Projeler</a>
+                <a
+                  href="#projeler"
+                  className="rounded-md px-3 py-1 text-gray-700 transition-colors hover:bg-blue-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                >
+                  Projeler
+                </a>
               </li>
               <li>
-                <a href="#iletisim">İletişim</a>
+                <a
+                  href="#iletisim"
+                  className="rounded-md px-3 py-1 text-gray-700 transition-colors hover:bg-blue-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                >
+                  İletişim
+                </a>
               </li>
             </ul>
           </nav>
         </div>
       </header>
 
-      <main id="main-content" className="container">
-        <section className="hero">
-          <h1>Yusuf Dursun - Kişisel Portföy</h1>
-          <p>
-            Web geliştirme öğreniyorum. HTML, CSS, React ve TypeScript ile
-            responsive projeler geliştiriyorum.
-          </p>
-        </section>
+      <main id="main-content">
+        <section id="hakkimda" className="px-4 py-16">
+          <div className="mx-auto flex max-w-4xl flex-col items-center gap-8 md:flex-row md:items-start">
+            <div className="flex h-40 w-40 items-center justify-center rounded-full bg-blue-100 text-4xl font-bold text-blue-800 shadow-lg dark:bg-gray-800 dark:text-blue-300">
+              Y
+            </div>
 
-        <section id="hakkimda">
-          <h2>Hakkımda</h2>
-
-          <div className="about-content">
-            <figure>
-              <img
-                src="https://via.placeholder.com/260"
-                alt="Yusuf Dursun'un profil fotoğrafı"
-              />
-              <figcaption>Yusuf Dursun</figcaption>
-            </figure>
-
-            <div className="about-text">
-              <p>
-                Merhaba, ben Yusuf. Web geliştirme öğreniyorum. HTML5, CSS,
-                React ve TypeScript ile projeler geliştiriyorum.
+            <div>
+              <h2 className="mb-4 text-center text-3xl font-bold text-gray-900 dark:text-white md:text-left">
+                Hakkımda
+              </h2>
+              <p className="mb-4 leading-relaxed text-gray-600 dark:text-gray-400">
+                Modern web teknolojileriyle kullanıcı dostu arayüzler geliştirmeyi
+                seviyorum. Bu projede önceki laboratuvarlarda yaptığım portföyü
+                Tailwind CSS ile yeniden düzenledim.
               </p>
-
-              <h3>Kullandığım Teknolojiler</h3>
-
-              <ul className="skill-tags" role="list" aria-label="Beceri etiketleri">
-                <li>HTML5</li>
-                <li>CSS3</li>
-                <li>React</li>
-                <li>TypeScript</li>
-                <li>Git</li>
-                <li>GitHub</li>
-                <li>Responsive Design</li>
+              <ul className="flex flex-wrap gap-2">
+                <li className="rounded-full bg-blue-800 px-3 py-1 text-sm text-white">React</li>
+                <li className="rounded-full bg-blue-800 px-3 py-1 text-sm text-white">TypeScript</li>
+                <li className="rounded-full bg-blue-800 px-3 py-1 text-sm text-white">Tailwind</li>
               </ul>
             </div>
           </div>
         </section>
 
-        <section id="projeler" aria-labelledby="projeler-baslik">
-          <h2 id="projeler-baslik">Projelerim</h2>
+        <section id="projeler" className="bg-gray-50 px-4 py-16 dark:bg-gray-900">
+          <div className="mx-auto max-w-6xl">
+            <h2 className="mb-10 text-center text-3xl font-bold text-gray-900 dark:text-white">
+              Projelerim
+            </h2>
 
-          <div className="project-grid">
-            <article className="project-card">
-              <img
-                src="https://via.placeholder.com/600x400"
-                alt="Watchlist projesinin ekran görüntüsü"
-              />
-              <h3>Watchlist Projesi</h3>
-              <p>
-                Film ve dizi listesi oluşturmak için geliştirdiğim bir web
-                uygulamasıdır.
-              </p>
-              <ul className="skill-tags" role="list" aria-label="Watchlist teknolojileri">
-                <li>React</li>
-                <li>TypeScript</li>
-                <li>CSS</li>
-              </ul>
-            </article>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="overflow-hidden rounded-xl bg-white shadow-md hover:shadow-lg dark:bg-gray-800">
+                <div className="p-5">
+                  <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
+                    Portföy Sitesi
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    Önceki laboratuvarlarda geliştirilen portföyün Tailwind ile yeniden tasarlanmış hali.
+                  </p>
+                </div>
+              </div>
 
-            <article className="project-card">
-              <img
-                src="https://via.placeholder.com/600x400"
-                alt="Kişisel portföy sitesinin ekran görüntüsü"
-              />
-              <h3>Kişisel Portföy Sitesi</h3>
-              <p>
-                Kendimi, projelerimi ve iletişim bilgilerimi tanıttığım tek
-                sayfalık portföy çalışmasıdır.
-              </p>
-              <ul className="skill-tags" role="list" aria-label="Portföy teknolojileri">
-                <li>HTML5</li>
-                <li>CSS3</li>
-                <li>React</li>
-              </ul>
-            </article>
+              <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
+                <div className="p-5">
+                  <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
+                    Responsive Arayüz
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    Mobile-first responsive sınıflarla oluşturulmuş proje bölümü.
+                  </p>
+                </div>
+              </div>
 
-            <article className="project-card">
-              <img
-                src="https://via.placeholder.com/600x400"
-                alt="Responsive tasarım örneği ekran görüntüsü"
-              />
-              <h3>Responsive Tasarım Çalışması</h3>
-              <p>
-                Mobile-first yaklaşımı, Flexbox ve Grid kullanarak geliştirdiğim
-                responsive arayüz örneğidir.
-              </p>
-              <ul className="skill-tags" role="list" aria-label="Responsive proje teknolojileri">
-                <li>Flexbox</li>
-                <li>Grid</li>
-                <li>Responsive</li>
-              </ul>
-            </article>
+              <div className="overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-800">
+                <div className="p-5">
+                  <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
+                    UI Kit Çalışması
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    Button, Input, Card ve Alert bileşenlerinin sergilendiği ekran.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
-        <section id="iletisim">
-          <h2>İletişim</h2>
+        <section id="iletisim" className="px-4 py-16">
+          <div className="mx-auto max-w-lg">
+            <h2 className="mb-8 text-center text-3xl font-bold text-gray-900 dark:text-white">
+              İletişim
+            </h2>
 
-          <form action="#" method="POST" noValidate className="contact-form">
-            <fieldset>
-              <legend>İletişim Formu</legend>
-
-              <div className="form-group">
-                <label htmlFor="name">Ad Soyad</label>
+            <form className="space-y-4">
+              <div>
+                <label htmlFor="ad" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Ad Soyad
+                </label>
                 <input
+                  id="ad"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
                   type="text"
-                  id="name"
-                  name="name"
-                  placeholder="Adınızı ve soyadınızı girin"
                   required
-                  minLength={2}
-                  aria-describedby="name-error"
                 />
-                <small id="name-error" className="error-msg" role="alert"></small>
               </div>
 
-              <div className="form-group">
-                <label htmlFor="email">E-posta</label>
+              <div>
+                <label htmlFor="email" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  E-posta
+                </label>
                 <input
-                  type="email"
                   id="email"
-                  name="email"
-                  placeholder="E-posta adresinizi girin"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+                  type="email"
                   required
-                  aria-describedby="email-error"
                 />
-                <small id="email-error" className="error-msg" role="alert"></small>
               </div>
 
-              <div className="form-group">
-                <label htmlFor="subject">Konu</label>
-                <select
-                  id="subject"
-                  name="subject"
-                  required
-                  aria-describedby="subject-error"
-                  defaultValue=""
-                >
-                  <option value="">-- Seçiniz --</option>
-                  <option value="is">İş Teklifi</option>
-                  <option value="soru">Soru</option>
-                  <option value="oneri">Öneri</option>
-                </select>
-                <small id="subject-error" className="error-msg" role="alert"></small>
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="message">Mesajınız</label>
+              <div>
+                <label htmlFor="mesaj" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Mesajınız
+                </label>
                 <textarea
-                  id="message"
-                  name="message"
+                  id="mesaj"
                   rows={5}
-                  placeholder="Mesajınızı yazın"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
                   required
-                  minLength={10}
-                  aria-describedby="message-error"
-                ></textarea>
-                <small
-                  id="message-error"
-                  className="error-msg"
-                  role="alert"
-                ></small>
+                />
               </div>
 
-              <button type="submit">Gönder</button>
-            </fieldset>
-          </form>
+              <Button variant="primary" size="lg" type="submit">
+                Gönder
+              </Button>
+            </form>
+          </div>
+        </section>
+
+        <section className="px-4 py-16">
+          <div className="mx-auto max-w-6xl">
+            <UIKit />
+          </div>
         </section>
       </main>
 
-      <footer>
-        <div className="container">
-          <p>&copy; 2026 Yusuf Dursun. Tüm hakları saklıdır.</p>
-        </div>
+      <footer className="border-t border-gray-200 bg-gray-100 px-4 py-6 text-center text-sm text-gray-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400">
+        <p>&copy; 2026 Yusuf. Tüm hakları saklıdır.</p>
       </footer>
-    </>
+    </div>
   );
 }
-
-export default App;
