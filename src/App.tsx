@@ -1,194 +1,162 @@
-import UIKit from "./pages/UIKit";
+import { useEffect, useState } from "react";
+import type {
+  Project,
+  Category,
+  SortField,
+  SortOrder,
+} from "./types/project";
+import { fetchProjects } from "./services/projectService";
+import { applyFilters } from "./utils/projectHelpers";
+import Card from "./components/Card";
+import Input from "./components/Input";
 import Button from "./components/Button";
+import Alert from "./components/Alert";
 
 export default function App() {
-  const toggleDarkMode = () => {
-    document.documentElement.classList.toggle("dark");
-  };
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState<Category | "all">("all");
+  const [sortField, setSortField] = useState<SortField>("year");
+  const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await fetchProjects();
+        setProjects(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Bilinmeyen hata");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    load();
+  }, []);
+
+  const filtered = applyFilters(
+    projects,
+    search,
+    category,
+    sortField,
+    sortOrder
+  );
+
+  const categories: (Category | "all")[] = [
+    "all",
+    "frontend",
+    "fullstack",
+    "backend",
+  ];
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
-      <a
-        href="#main-content"
-        className="sr-only bg-blue-800 p-2 text-white focus:not-sr-only focus:absolute focus:left-0 focus:top-0 z-50"
-      >
-        Ana içeriğe atla
-      </a>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 p-4 md:p-8">
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
+          Projelerim
+        </h1>
 
-      <button
-        onClick={toggleDarkMode}
-        className="fixed right-4 top-4 z-50 rounded-full bg-gray-200 p-2 text-gray-800 shadow-lg transition-transform hover:scale-110 dark:bg-gray-700 dark:text-gray-200"
-        aria-label="Tema değiştir"
-      >
-        <span className="dark:hidden">☾</span>
-        <span className="hidden dark:inline">☀</span>
-      </button>
+        {error && (
+          <Alert variant="error" title="Hata">
+            {error}
+          </Alert>
+        )}
 
-      <header className="sticky top-0 z-40 border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 py-3 sm:flex-row">
-          <h1 className="text-xl font-bold text-blue-800 dark:text-blue-300">
-            Yusuf - Tailwind Portföy
-          </h1>
+        <div className="flex flex-col sm:flex-row gap-4 mb-8">
+          <Input
+            id="search"
+            placeholder="Proje ara..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
 
-          <nav aria-label="Ana navigasyon">
-            <ul className="flex flex-wrap gap-2">
-              <li>
-                <a
-                  href="#hakkimda"
-                  className="rounded-md px-3 py-1 text-gray-700 transition-colors hover:bg-blue-100 dark:text-gray-300 dark:hover:bg-gray-800"
-                >
-                  Hakkımda
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#projeler"
-                  className="rounded-md px-3 py-1 text-gray-700 transition-colors hover:bg-blue-100 dark:text-gray-300 dark:hover:bg-gray-800"
-                >
-                  Projeler
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#iletisim"
-                  className="rounded-md px-3 py-1 text-gray-700 transition-colors hover:bg-blue-100 dark:text-gray-300 dark:hover:bg-gray-800"
-                >
-                  İletişim
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </header>
-
-      <main id="main-content">
-        <section id="hakkimda" className="px-4 py-16">
-          <div className="mx-auto flex max-w-4xl flex-col items-center gap-8 md:flex-row md:items-start">
-            <div className="flex h-40 w-40 items-center justify-center rounded-full bg-blue-100 text-4xl font-bold text-blue-800 shadow-lg dark:bg-gray-800 dark:text-blue-300">
-              Y
-            </div>
-
-            <div>
-              <h2 className="mb-4 text-center text-3xl font-bold text-gray-900 dark:text-white md:text-left">
-                Hakkımda
-              </h2>
-              <p className="mb-4 leading-relaxed text-gray-600 dark:text-gray-400">
-                Modern web teknolojileriyle kullanıcı dostu arayüzler geliştirmeyi
-                seviyorum. Bu projede önceki laboratuvarlarda yaptığım portföyü
-                Tailwind CSS ile yeniden düzenledim.
-              </p>
-              <ul className="flex flex-wrap gap-2">
-                <li className="rounded-full bg-blue-800 px-3 py-1 text-sm text-white">React</li>
-                <li className="rounded-full bg-blue-800 px-3 py-1 text-sm text-white">TypeScript</li>
-                <li className="rounded-full bg-blue-800 px-3 py-1 text-sm text-white">Tailwind</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        <section id="projeler" className="bg-gray-50 px-4 py-16 dark:bg-gray-900">
-          <div className="mx-auto max-w-6xl">
-            <h2 className="mb-10 text-center text-3xl font-bold text-gray-900 dark:text-white">
-              Projelerim
-            </h2>
-
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              <div className="overflow-hidden rounded-xl bg-white shadow-md hover:shadow-lg dark:bg-gray-800">
-                <div className="p-5">
-                  <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
-                    Portföy Sitesi
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    Önceki laboratuvarlarda geliştirilen portföyün Tailwind ile yeniden tasarlanmış hali.
-                  </p>
-                </div>
-              </div>
-
-              <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
-                <div className="p-5">
-                  <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
-                    Responsive Arayüz
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    Mobile-first responsive sınıflarla oluşturulmuş proje bölümü.
-                  </p>
-                </div>
-              </div>
-
-              <div className="overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-800">
-                <div className="p-5">
-                  <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
-                    UI Kit Çalışması
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    Button, Input, Card ve Alert bileşenlerinin sergilendiği ekran.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="iletisim" className="px-4 py-16">
-          <div className="mx-auto max-w-lg">
-            <h2 className="mb-8 text-center text-3xl font-bold text-gray-900 dark:text-white">
-              İletişim
-            </h2>
-
-            <form className="space-y-4">
-              <div>
-                <label htmlFor="ad" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Ad Soyad
-                </label>
-                <input
-                  id="ad"
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
-                  type="text"
-                  required
-                />
-              </div>
-
-              <div>
-                <label htmlFor="email" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  E-posta
-                </label>
-                <input
-                  id="email"
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
-                  type="email"
-                  required
-                />
-              </div>
-
-              <div>
-                <label htmlFor="mesaj" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Mesajınız
-                </label>
-                <textarea
-                  id="mesaj"
-                  rows={5}
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
-                  required
-                />
-              </div>
-
-              <Button variant="primary" size="lg" type="submit">
-                Gönder
+          <div className="flex gap-2 flex-wrap">
+            {categories.map((cat) => (
+              <Button
+                key={cat}
+                variant={category === cat ? "primary" : "ghost"}
+                size="sm"
+                onClick={() => setCategory(cat)}
+              >
+                {cat === "all" ? "Tümü" : cat}
               </Button>
-            </form>
+            ))}
           </div>
-        </section>
 
-        <section className="px-4 py-16">
-          <div className="mx-auto max-w-6xl">
-            <UIKit />
+          <div className="flex gap-2">
+            <select
+              value={sortField}
+              onChange={(e) => setSortField(e.target.value as SortField)}
+              className="border rounded-xl px-3 py-2 dark:bg-gray-800 dark:text-white"
+            >
+              <option value="year">Yıl</option>
+              <option value="title">Başlık</option>
+            </select>
+
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() =>
+                setSortOrder((o) => (o === "asc" ? "desc" : "asc"))
+              }
+            >
+              {sortOrder === "asc" ? "A-Z" : "Z-A"}
+            </Button>
           </div>
-        </section>
-      </main>
+        </div>
 
-      <footer className="border-t border-gray-200 bg-gray-100 px-4 py-6 text-center text-sm text-gray-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400">
-        <p>&copy; 2026 Yusuf. Tüm hakları saklıdır.</p>
-      </footer>
+        {loading && (
+          <p className="text-center text-gray-500">Yükleniyor...</p>
+        )}
+
+        {!loading && filtered.length === 0 && (
+          <p className="text-center text-gray-500">
+            Eşleşen proje bulunamadı.
+          </p>
+        )}
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {!loading &&
+            filtered.map((project) => (
+              <Card
+                key={project.id}
+                variant="elevated"
+                title={project.title}
+                image={project.image}
+                imageAlt={`${project.title} ekran görüntüsü`}
+              >
+                <p className="text-sm mb-3 text-gray-700 dark:text-gray-300">
+                  {project.description}
+                </p>
+
+                <div className="flex flex-wrap gap-1">
+                  {project.tech.map((t) => (
+                    <span
+                      key={t}
+                      className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs px-2 py-1 rounded-full"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+
+                <p className="text-xs text-gray-400 mt-3">
+                  {project.year} · {project.category}
+                </p>
+              </Card>
+            ))}
+        </div>
+
+        {!loading && (
+          <p className="text-sm text-gray-500 mt-4 text-center">
+            {filtered.length} / {projects.length} proje gösteriliyor
+          </p>
+        )}
+      </div>
     </div>
   );
 }
